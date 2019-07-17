@@ -6,6 +6,7 @@ app.set('view engine', 'ejs');
 
 const homeRouter = require('./routes/home');
 const productRouter = require('./routes/product');
+const bookRouter = require('./routes/book');
 
 const sequelize = require('./configs/sequelize');
 
@@ -13,6 +14,7 @@ const Product = require('./models/product');
 const Book = require('./models/Book');
 
 app.use(homeRouter);
+app.use('/book', bookRouter);
 app.use('/product', productRouter);
 
 app.listen(3000, () => {
