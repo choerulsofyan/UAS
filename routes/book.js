@@ -19,4 +19,7 @@ router.post('/:book_id', urlencodedParser, bookController.updateBook);
 // delete book
 router.post('/:book_id/destroy', urlencodedParser, bookController.destroyBook);
 
+// search book by judul
+router.post('/search/:judul', urlencodedParser, bookController.searchBook);
+
 module.exports = router;
