@@ -10,6 +10,7 @@ const productRouter = require('./routes/product');
 const sequelize = require('./configs/sequelize');
 
 const Product = require('./models/product');
+const Book = require('./models/Book');
 
 app.use(homeRouter);
 app.use('/product', productRouter);
