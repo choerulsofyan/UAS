@@ -15,13 +15,13 @@ const sequelize = require('./configs/sequelize');
 // IMPORT MODELS
 const Product = require('./models/product');
 const Category = require('./models/category');
-const Book = require('./models/Book');
+const Book = require('./models/book');
 
 // REGISTER IMPORTED ROUTERS
 app.use(homeRouter);
-app.use('/book', bookRouter);
 app.use('/product', productRouter);
 app.use('/category', categoryRouter);
+app.use('/book', bookRouter);
 
 app.listen(3000, () => {
     console.log('server started');
