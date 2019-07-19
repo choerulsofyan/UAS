@@ -1,6 +1,9 @@
 const User = require('../models/User');
 const sequelize = require('sequelize');
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 module.exports.getIndexUser = (req, res) => {
 
     // sequelize use "Javascript Promise"
@@ -46,20 +49,22 @@ module.exports.getDetailUser = (req, res) => {
 } 
 
 module.exports.storeUser = (req, res) => {
-    User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        role: req.body.role,
-    })
-    .then((user) => {
-        res.status(201).json({
-            msg: 'User Created',
-            user: user
+    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+        User.create({
+            username: req.body.username,
+            email: req.body.email,
+            password: hash,
+            role: req.body.role,
+        })
+        .then((user) => {
+            res.status(201).json({
+                msg: 'User Created',
+                user: user
+            });
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    })
-    .catch((error) => {
-        console.log(error)
     });
 } 
 
