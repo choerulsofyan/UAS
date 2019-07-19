@@ -103,7 +103,7 @@ module.exports.searchCategory = (req, res) => {
     Category.findAll({
             limit: 10,
             where: {
-                judul: sequelize.where(sequelize.fn('LOWER', sequelize.col('judul')), 'LIKE', '%' + req.params.judul + '%')
+                name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + req.params.name + '%')
             }
         })
         .then((category) => {

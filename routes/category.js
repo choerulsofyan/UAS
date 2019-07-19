@@ -11,17 +11,16 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
 
-router.get('/', categoryController.getIndexCategory);
+router.get('/', categoryController.getAllCategory);
+// search category by judul
+router.post('/search/:name', urlencodedParser, categoryController.searchCategory);
 // get one category
 router.get('/:category_id', categoryController.getDetailCategory);
 // post category POST /api/category gets JSON bodies
 router.post('/', urlencodedParser, categoryController.storeCategory);
 // update category
-router.post('/:category_id', urlencodedParser, categoryController.updateCategory);
+router.put('/:category_id', urlencodedParser, categoryController.updateCategory);
 // delete category
-router.post('/:category_id/destroy', urlencodedParser, categoryController.destroyCategory);
-
-// search category by judul
-router.post('/search/:judul', urlencodedParser, categoryController.searchCategory);
+router.delete('/:category_id/destroy', urlencodedParser, categoryController.destroyCategory);
 
 module.exports = router;
