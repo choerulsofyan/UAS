@@ -44,66 +44,108 @@ module.exports.getDetailBook = (req, res) => {
 } 
 
 module.exports.storeBook = (req, res) => {
-    Book.create({
-        judul: req.body.judul,
-        pengarang: req.body.pengarang,
-        penerbit: req.body.penerbit,
-        price: req.body.price,
+    jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
+        if(error){
+            res.status(403).json({
+                msg: error.message
+            });
+        } else {
+            if(authData.admin == 1){ //isAdmin
+                Book.create({
+                    judul: req.body.judul,
+                    pengarang: req.body.pengarang,
+                    penerbit: req.body.penerbit,
+                    price: req.body.price,
+                })
+                .then((book) => {
+                    res.status(200).json({
+                        msg: 'Book Created',
+                        book: book
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+            } else {
+                res.status(403).json({
+                    msg: 'Forbiden, You Are Not an Admin!'
+                });
+            }
+        }
     })
-    .then((book) => {
-        res.status(200).json({
-            msg: 'Book Created',
-            book: book
-        });
-    })
-    .catch((error) => {
-        console.log(error)
-    });
 } 
 
 module.exports.updateBook = (req, res) => {
-    Book.findOne({
-        where: {
-            id: req.params.book_id
-        }
-    })
-    .then((book) => {
-        if(!book){
-            return res.status(404).json({
-                msg: 'Book Not Found'
+    jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
+        if(error){
+            res.status(403).json({
+                msg: error.message
             });
+        } else {
+            if(authData.admin == 1){ //isAdmin
+                Book.findOne({
+                    where: {
+                        id: req.params.book_id
+                    }
+                })
+                .then((book) => {
+                    if(!book){
+                        return res.status(404).json({
+                            msg: 'Book Not Found'
+                        });
+                    }
+                    book.judul = req.body.judul;
+                    book.pengarang = req.body.pengarang;
+                    book.penerbit = req.body.penerbit;
+                    book.price = req.body.price;
+                    book.save();
+                    
+                    return res.status(200).json({
+                        msg: 'Book Updated',
+                        book: book
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+            } else {
+                res.status(403).json({
+                    msg: 'Forbiden, You Are Not an Admin!'
+                });
+            }
         }
-        book.judul = req.body.judul;
-        book.pengarang = req.body.pengarang;
-        book.penerbit = req.body.penerbit;
-        book.price = req.body.price;
-        book.save();
-        
-        return res.status(200).json({
-            msg: 'Book Updated',
-            book: book
-        });
     })
-    .catch((error) => {
-        console.log(error)
-    });
 } 
 
 
 module.exports.destroyBook = (req, res) => {
-    Book.destroy({
-        where: {
-            id: req.params.book_id
+    jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
+        if(error){
+            res.status(403).json({
+                msg: error.message
+            });
+        } else {
+            if(authData.admin == 1){ //isAdmin
+                Book.destroy({
+                    where: {
+                        id: req.params.book_id
+                    }
+                })
+                .then((book) => {
+                    res.status(200).json({
+                        msg: 'Book Deleted'
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+            } else {
+                res.status(403).json({
+                    msg: 'Forbiden, You Are Not an Admin!'
+                });
+            }
         }
     })
-    .then((book) => {
-        res.status(200).json({
-            msg: 'Book Deleted'
-        });
-    })
-    .catch((error) => {
-        console.log(error)
-    });
 } 
 
 module.exports.searchBook = (req, res) => {
