@@ -20,6 +20,11 @@ const User = require('./models/User');
 const Publisher = require('./models/publisher');
 const Author = require('./models/author');
 
+Book.belongsTo(Category)
+Book.belongsTo(Author)
+Book.belongsTo(Publisher)
+Book.belongsTo(User)
+
 // REGISTER IMPORTED ROUTERS
 app.use('/category', categoryRouter);
 app.use('/book', bookRouter);

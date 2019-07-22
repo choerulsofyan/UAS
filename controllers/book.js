@@ -54,8 +54,6 @@ module.exports.storeBook = (req, res) => {
             if (authData.admin == 1) { //isAdmin
                 Book.create({
                         title: req.body.title,
-                        author: req.body.author,
-                        publisher: req.body.publisher,
                         price: req.body.price
                     })
                     .then((book) => {
@@ -96,8 +94,6 @@ module.exports.updateBook = (req, res) => {
                             });
                         }
                         book.title = req.body.title;
-                        book.author = req.body.author;
-                        book.publisher = req.body.publisher;
                         book.price = req.body.price;
                         book.save();
 

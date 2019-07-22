@@ -6,10 +6,9 @@ class Book extends Sequelize.Model {}
 
 Book.init({
     title: Sequelize.STRING,
-    author: Sequelize.STRING,
-    publisher: Sequelize.STRING,
     price: Sequelize.INTEGER,
 }, {
+    underscored: true,
     sequelize,
     modelName: 'book'
 });

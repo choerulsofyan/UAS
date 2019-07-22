@@ -10,6 +10,7 @@ Publisher.init({
     email: Sequelize.STRING,
     address: Sequelize.INTEGER,
 }, {
+    underscored: true,
     sequelize,
     modelName: 'publisher'
 });
