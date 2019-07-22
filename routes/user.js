@@ -21,7 +21,7 @@ router.put('/:user_id', urlencodedParser, auth.verifyToken, userController.updat
 // delete user
 router.delete('/:user_id/destroy', urlencodedParser, auth.verifyToken, userController.destroyUser); // only role = 1 can access (admin)
 
-// search user by judul
+// search user by title
 router.post('/search/:username', urlencodedParser, userController.searchUser);
 
 // login 

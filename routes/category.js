@@ -22,7 +22,7 @@ router.post('/', urlencodedParser, auth.verifyToken, categoryController.storeCat
 router.put('/:category_id', urlencodedParser, auth.verifyToken, categoryController.updateCategory);
 // delete category
 router.delete('/:category_id/destroy', urlencodedParser, auth.verifyToken, categoryController.destroyCategory);
-// search category by judul
+// search category by title
 router.post('/search/:name', urlencodedParser, categoryController.searchCategory);
 
 module.exports = router;

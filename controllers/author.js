@@ -1,50 +1,50 @@
-const Book = require('../models/book');
+const Author = require('../models/author');
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 // sequelize use "Javascript Promise"
 // It Is Asynchronous
 
-module.exports.getIndexBook = (req, res) => {
-    Book
+module.exports.getIndexAuthor = (req, res) => {
+    Author
         .findOne({
             where: {
                 id: 1
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((author) => {
+            res.status(200).json(author);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getAllBook = (req, res) => {
-    Book.findAll()
-        .then((book) => {
-            res.status(200).json(book);
+module.exports.getAllAuthor = (req, res) => {
+    Author.findAll()
+        .then((author) => {
+            res.status(200).json(author);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getDetailBook = (req, res) => {
-    Book.findOne({
+module.exports.getDetailAuthor = (req, res) => {
+    Author.findOne({
             where: {
-                id: req.params.book_id
+                id: req.params.author_id
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((author) => {
+            res.status(200).json(author);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.storeBook = (req, res) => {
+module.exports.storeAuthor = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -52,16 +52,14 @@ module.exports.storeBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.create({
-                        title: req.body.title,
-                        author: req.body.author,
-                        publisher: req.body.publisher,
-                        price: req.body.price
+                Author.create({
+                        name: req.body.name,
+                        email: req.body.email
                     })
-                    .then((book) => {
+                    .then((author) => {
                         res.status(200).json({
-                            msg: 'Book Created',
-                            book: book
+                            msg: 'Author Created',
+                            author: author
                         });
                     })
                     .catch((error) => {
@@ -76,7 +74,7 @@ module.exports.storeBook = (req, res) => {
     })
 }
 
-module.exports.updateBook = (req, res) => {
+module.exports.updateAuthor = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -84,26 +82,24 @@ module.exports.updateBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.findOne({
+                Author.findOne({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.author_id
                         }
                     })
-                    .then((book) => {
-                        if (!book) {
+                    .then((author) => {
+                        if (!author) {
                             return res.status(404).json({
-                                msg: 'Book Not Found'
+                                msg: 'Author Not Found'
                             });
                         }
-                        book.title = req.body.title;
-                        book.author = req.body.author;
-                        book.publisher = req.body.publisher;
-                        book.price = req.body.price;
-                        book.save();
+                        author.name = req.body.name;
+                        author.email = req.body.email;
+                        author.save();
 
                         return res.status(200).json({
-                            msg: 'Book Updated',
-                            book: book
+                            msg: 'Author Updated',
+                            author: author
                         });
                     })
                     .catch((error) => {
@@ -119,7 +115,7 @@ module.exports.updateBook = (req, res) => {
 }
 
 
-module.exports.destroyBook = (req, res) => {
+module.exports.destroyAuthor = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -127,14 +123,14 @@ module.exports.destroyBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.destroy({
+                Author.destroy({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.author_id
                         }
                     })
-                    .then((book) => {
+                    .then((author) => {
                         res.status(200).json({
-                            msg: 'Book Deleted'
+                            msg: 'Author Deleted'
                         });
                     })
                     .catch((error) => {
@@ -149,17 +145,17 @@ module.exports.destroyBook = (req, res) => {
     })
 }
 
-module.exports.searchBook = (req, res) => {
-    Book.findAll({
+module.exports.searchAuthor = (req, res) => {
+    Author.findAll({
             limit: 10,
             where: {
-                title: sequelize.where(sequelize.fn('LOWER', sequelize.col('title')), 'LIKE', '%' + req.params.title + '%')
+                name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + req.params.name + '%')
             }
         })
-        .then((book) => {
+        .then((author) => {
             res.status(200).json({
                 msg: 'search results',
-                result: book
+                result: author
             });
         })
         .catch((error) => {

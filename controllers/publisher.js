@@ -1,50 +1,50 @@
-const Book = require('../models/book');
+const Publisher = require('../models/publisher');
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 // sequelize use "Javascript Promise"
 // It Is Asynchronous
 
-module.exports.getIndexBook = (req, res) => {
-    Book
+module.exports.getIndexPublisher = (req, res) => {
+    Publisher
         .findOne({
             where: {
                 id: 1
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((publisher) => {
+            res.status(200).json(publisher);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getAllBook = (req, res) => {
-    Book.findAll()
-        .then((book) => {
-            res.status(200).json(book);
+module.exports.getAllPublisher = (req, res) => {
+    Publisher.findAll()
+        .then((publisher) => {
+            res.status(200).json(publisher);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getDetailBook = (req, res) => {
-    Book.findOne({
+module.exports.getDetailPublisher = (req, res) => {
+    Publisher.findOne({
             where: {
-                id: req.params.book_id
+                id: req.params.publisher_id
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((publisher) => {
+            res.status(200).json(publisher);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.storeBook = (req, res) => {
+module.exports.storePublisher = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -52,16 +52,16 @@ module.exports.storeBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.create({
-                        title: req.body.title,
-                        author: req.body.author,
-                        publisher: req.body.publisher,
-                        price: req.body.price
+                Publisher.create({
+                        name: req.body.name,
+                        phone: req.body.phone,
+                        email: req.body.email,
+                        address: req.body.address
                     })
-                    .then((book) => {
+                    .then((publisher) => {
                         res.status(200).json({
-                            msg: 'Book Created',
-                            book: book
+                            msg: 'Publisher Created',
+                            publisher: publisher
                         });
                     })
                     .catch((error) => {
@@ -76,7 +76,7 @@ module.exports.storeBook = (req, res) => {
     })
 }
 
-module.exports.updateBook = (req, res) => {
+module.exports.updatePublisher = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -84,26 +84,26 @@ module.exports.updateBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.findOne({
+                Publisher.findOne({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.publisher_id
                         }
                     })
-                    .then((book) => {
-                        if (!book) {
+                    .then((publisher) => {
+                        if (!publisher) {
                             return res.status(404).json({
-                                msg: 'Book Not Found'
+                                msg: 'Publisher Not Found'
                             });
                         }
-                        book.title = req.body.title;
-                        book.author = req.body.author;
-                        book.publisher = req.body.publisher;
-                        book.price = req.body.price;
-                        book.save();
+                        publisher.name = req.body.name;
+                        publisher.phone = req.body.phone;
+                        publisher.email = req.body.email;
+                        publisher.address = req.body.address;
+                        publisher.save();
 
                         return res.status(200).json({
-                            msg: 'Book Updated',
-                            book: book
+                            msg: 'Publisher Updated',
+                            publisher: publisher
                         });
                     })
                     .catch((error) => {
@@ -119,7 +119,7 @@ module.exports.updateBook = (req, res) => {
 }
 
 
-module.exports.destroyBook = (req, res) => {
+module.exports.destroyPublisher = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -127,14 +127,14 @@ module.exports.destroyBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.destroy({
+                Publisher.destroy({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.publisher_id
                         }
                     })
-                    .then((book) => {
+                    .then((publisher) => {
                         res.status(200).json({
-                            msg: 'Book Deleted'
+                            msg: 'Publisher Deleted'
                         });
                     })
                     .catch((error) => {
@@ -149,17 +149,17 @@ module.exports.destroyBook = (req, res) => {
     })
 }
 
-module.exports.searchBook = (req, res) => {
-    Book.findAll({
+module.exports.searchPublisher = (req, res) => {
+    Publisher.findAll({
             limit: 10,
             where: {
                 title: sequelize.where(sequelize.fn('LOWER', sequelize.col('title')), 'LIKE', '%' + req.params.title + '%')
             }
         })
-        .then((book) => {
+        .then((publisher) => {
             res.status(200).json({
                 msg: 'search results',
-                result: book
+                result: publisher
             });
         })
         .catch((error) => {

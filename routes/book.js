@@ -22,7 +22,7 @@ router.post('/', urlencodedParser, auth.verifyToken, bookController.storeBook);
 router.put('/:book_id', urlencodedParser, auth.verifyToken, bookController.updateBook);
 // delete book
 router.delete('/:book_id/destroy', urlencodedParser, auth.verifyToken, bookController.destroyBook);
-// search book by judul
-router.post('/search/:judul', urlencodedParser, bookController.searchBook);
+// search book by title
+router.post('/search/:title', urlencodedParser, bookController.searchBook);
 
 module.exports = router;
