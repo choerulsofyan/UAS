@@ -8,7 +8,6 @@ Book.init({
     title: Sequelize.STRING,
     price: Sequelize.INTEGER,
 }, {
-    underscored: true,
     sequelize,
     modelName: 'book'
 });

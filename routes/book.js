@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
 
-router.get('/', bookController.getIndexBook);
+router.get('/', bookController.getAllBook);
 // get one book
 router.get('/:book_id', bookController.getDetailBook);
 // post book POST /api/book gets JSON bodies

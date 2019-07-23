@@ -10,7 +10,6 @@ User.init({
     password: Sequelize.STRING,
     role: Sequelize.INTEGER,
 }, {
-    underscored: true,
     sequelize,
     modelName: 'user'
 });

@@ -8,9 +8,8 @@ Publisher.init({
     name: Sequelize.STRING,
     phone: Sequelize.STRING,
     email: Sequelize.STRING,
-    address: Sequelize.INTEGER,
+    address: Sequelize.STRING,
 }, {
-    underscored: true,
     sequelize,
     modelName: 'publisher'
 });

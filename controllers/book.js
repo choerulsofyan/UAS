@@ -33,7 +33,7 @@ module.exports.getAllBook = (req, res) => {
 module.exports.getDetailBook = (req, res) => {
     Book.findOne({
             where: {
-                id: req.params.book_id
+                id: req.params.bookId
             }
         })
         .then((book) => {
@@ -54,7 +54,11 @@ module.exports.storeBook = (req, res) => {
             if (authData.admin == 1) { //isAdmin
                 Book.create({
                         title: req.body.title,
-                        price: req.body.price
+                        price: req.body.price,
+                        categoryId: req.body.categoryId,
+                        authorId: req.body.authorId,
+                        publisherId: req.body.publisherId,
+                        userId: req.body.userId
                     })
                     .then((book) => {
                         res.status(200).json({
@@ -84,7 +88,7 @@ module.exports.updateBook = (req, res) => {
             if (authData.admin == 1) { //isAdmin
                 Book.findOne({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.bookId
                         }
                     })
                     .then((book) => {
@@ -95,6 +99,10 @@ module.exports.updateBook = (req, res) => {
                         }
                         book.title = req.body.title;
                         book.price = req.body.price;
+                        book.categoryId = req.body.categoryId;
+                        book.authorId = req.body.authorId;
+                        book.publisherId = req.body.publisherId;
+                        book.userId = req.body.userId;
                         book.save();
 
                         return res.status(200).json({
@@ -125,7 +133,7 @@ module.exports.destroyBook = (req, res) => {
             if (authData.admin == 1) { //isAdmin
                 Book.destroy({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.bookId
                         }
                     })
                     .then((book) => {

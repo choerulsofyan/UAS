@@ -8,7 +8,6 @@ Author.init({
     name: Sequelize.STRING,
     email: Sequelize.STRING,
 }, {
-    underscored: true,
     sequelize,
     modelName: 'author'
 });

@@ -8,7 +8,6 @@ Category.init({
     name: Sequelize.STRING,
     description: Sequelize.STRING
 }, {
-    underscored: true,
     sequelize,
     modelName: 'category'
 });
