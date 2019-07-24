@@ -1,50 +1,50 @@
-const Book = require('../models/book');
+const Order = require('../models/order');
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 // sequelize use "Javascript Promise"
 // It Is Asynchronous
 
-module.exports.getIndexBook = (req, res) => {
-    Book
+module.exports.getIndexOrder = (req, res) => {
+    Order
         .findOne({
             where: {
                 id: 1
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((order) => {
+            res.status(200).json(order);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getAllBook = (req, res) => {
-    Book.findAll()
-        .then((book) => {
-            res.status(200).json(book);
+module.exports.getAllOrder = (req, res) => {
+    Order.findAll()
+        .then((order) => {
+            res.status(200).json(order);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.getDetailBook = (req, res) => {
-    Book.findOne({
+module.exports.getDetailOrder = (req, res) => {
+    Order.findOne({
             where: {
-                id: req.params.book_id
+                id: req.params.order_id
             }
         })
-        .then((book) => {
-            res.status(200).json(book);
+        .then((order) => {
+            res.status(200).json(order);
         })
         .catch((error) => {
             console.log(error)
         });
 }
 
-module.exports.storeBook = (req, res) => {
+module.exports.storeOrder = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -52,18 +52,17 @@ module.exports.storeBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.create({
-                        title: req.body.title,
-                        price: req.body.price,
-                        categoryId: req.body.categoryId,
-                        authorId: req.body.authorId,
-                        publisherId: req.body.publisherId,
+                Order.create({
+                        date_trans: req.body.date_trans,
+                        transaction_number: req.body.transaction_number,
+                        qty: req.body.qty,
+                        bookId: req.body.bookId,
                         userId: req.body.userId
                     })
-                    .then((book) => {
+                    .then((order) => {
                         res.status(200).json({
-                            msg: 'Book Created',
-                            book: book
+                            msg: 'Order Created',
+                            order: order
                         });
                     })
                     .catch((error) => {
@@ -78,7 +77,7 @@ module.exports.storeBook = (req, res) => {
     })
 }
 
-module.exports.updateBook = (req, res) => {
+module.exports.updateOrder = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -86,28 +85,27 @@ module.exports.updateBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.findOne({
+                Order.findOne({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.order_id
                         }
                     })
-                    .then((book) => {
-                        if (!book) {
+                    .then((order) => {
+                        if (!order) {
                             return res.status(404).json({
-                                msg: 'Book Not Found'
+                                msg: 'Order Not Found'
                             });
                         }
-                        book.title = req.body.title;
-                        book.price = req.body.price;
-                        book.categoryId = req.body.categoryId;
-                        book.authorId = req.body.authorId;
-                        book.publisherId = req.body.publisherId;
-                        book.userId = req.body.userId;
-                        book.save();
+                        order.date_trans = req.body.date_trans;
+                        order.transaction_number = req.body.transaction_number;
+                        order.qty = req.body.qty;
+                        order.bookId = req.body.bookId;
+                        order.userId = req.body.userId;
+                        order.save();
 
                         return res.status(200).json({
-                            msg: 'Book Updated',
-                            book: book
+                            msg: 'Order Updated',
+                            order: order
                         });
                     })
                     .catch((error) => {
@@ -123,7 +121,7 @@ module.exports.updateBook = (req, res) => {
 }
 
 
-module.exports.destroyBook = (req, res) => {
+module.exports.destroyOrder = (req, res) => {
     jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
         if (error) {
             res.status(403).json({
@@ -131,14 +129,14 @@ module.exports.destroyBook = (req, res) => {
             });
         } else {
             if (authData.admin == 1) { //isAdmin
-                Book.destroy({
+                Order.destroy({
                         where: {
-                            id: req.params.book_id
+                            id: req.params.order_id
                         }
                     })
-                    .then((book) => {
+                    .then((order) => {
                         res.status(200).json({
-                            msg: 'Book Deleted'
+                            msg: 'Order Deleted'
                         });
                     })
                     .catch((error) => {
@@ -153,17 +151,17 @@ module.exports.destroyBook = (req, res) => {
     })
 }
 
-module.exports.searchBook = (req, res) => {
-    Book.findAll({
+module.exports.searchOrder = (req, res) => {
+    Order.findAll({
             limit: 10,
             where: {
                 title: sequelize.where(sequelize.fn('LOWER', sequelize.col('title')), 'LIKE', '%' + req.params.title + '%')
             }
         })
-        .then((book) => {
+        .then((order) => {
             res.status(200).json({
                 msg: 'search results',
-                result: book
+                result: order
             });
         })
         .catch((error) => {

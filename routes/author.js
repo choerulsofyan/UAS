@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
 
-router.get('/', authorController.getIndexAuthor);
+router.get('/', authorController.getAllAuthor);
 // get one author
 router.get('/:author_id', authorController.getDetailAuthor);
 // post author POST /api/author gets JSON bodies
